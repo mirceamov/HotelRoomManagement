@@ -1,4 +1,4 @@
-using HotelRoomManagement.Application.Queries;
+using HotelRoomManagement.Application.Queries.RoomTypes;
 using HotelRoomManagement.Domain.Entities;
 using HotelRoomManagement.Domain.Interfaces;
 

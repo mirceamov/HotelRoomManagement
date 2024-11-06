@@ -1,6 +1,6 @@
 ﻿using HotelRoomManagement.Domain.Interfaces;
 
-namespace HotelRoomManagement.Application.Queries
+namespace HotelRoomManagement.Application.Queries.RoomTypes
 {
     public class RoomTypesQuery : IQuery<RoomTypesQuery, string>
     {

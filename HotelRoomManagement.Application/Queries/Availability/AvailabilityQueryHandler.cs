@@ -1,7 +1,7 @@
 ﻿using HotelRoomManagement.Domain.Entities;
 using HotelRoomManagement.Domain.Interfaces;
 
-namespace HotelRoomManagement.Application.Queries
+namespace HotelRoomManagement.Application.Queries.Availability
 {
     public class AvailabilityQueryHandler : IQueryHandler<AvailabilityQuery, int>
     {

@@ -1,6 +1,6 @@
 ﻿using HotelRoomManagement.Domain.Interfaces;
 
-namespace HotelRoomManagement.Application.Queries
+namespace HotelRoomManagement.Application.Queries.Availability
 {
     public class AvailabilityQuery : IQuery<AvailabilityQuery, int>
     {

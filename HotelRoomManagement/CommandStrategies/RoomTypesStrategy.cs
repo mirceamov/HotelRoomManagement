@@ -1,5 +1,5 @@
-﻿using HotelRoomManagement.Application.Queries;
-using HotelRoomManagement.Domain;
+﻿using HotelRoomManagement.Application.Queries.RoomTypes;
+using HotelRoomManagement.Application.Queries;
 using HotelRoomManagement.Domain.Interfaces;
 
 namespace HotelRoomManagement.CommadStrategies
@@ -16,27 +16,10 @@ namespace HotelRoomManagement.CommadStrategies
 
         public async Task ExecuteAsync(string[] parameters)
         {
-            var roomTypesQuery = CreateRoomTypesQuery(parameters);
+            var roomTypesQuery = QueryFactory.CreateQuery<RoomTypesQuery>(parameters);
 
             var roomTypes = await _roomTypesQueryHandler.HandleAsync(roomTypesQuery);
             Console.WriteLine(roomTypes);
-        }
-
-        private RoomTypesQuery CreateRoomTypesQuery(string[] parameters)
-        {
-            var hotelId = parameters[0].Trim();
-            var dates = parameters[1].Trim().Split('-');
-            var startDate = DateTime.ParseExact(dates[0], Constants.JsonDateFormat, null);
-            var endDate = dates.Length > 1 ? DateTime.ParseExact(dates[1], Constants.JsonDateFormat, null) : startDate;
-            var guests = int.Parse(parameters[2].Trim());
-
-            return new RoomTypesQuery
-            {
-                HotelId = hotelId,
-                StartDate = startDate,
-                EndDate = endDate,
-                Guests = guests
-            };
         }
     }
 }
