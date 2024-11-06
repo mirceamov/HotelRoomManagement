@@ -1,4 +1,5 @@
 ﻿using HotelRoomManagement.Application.Queries;
+using HotelRoomManagement.Domain;
 using HotelRoomManagement.Domain.Interfaces;
 
 namespace HotelRoomManagement.CommadStrategies
@@ -26,8 +27,8 @@ namespace HotelRoomManagement.CommadStrategies
         {
             var hotelId = parameters[0].Trim();
             var dates = parameters[1].Trim().Split('-');
-            var startDate = DateTime.ParseExact(dates[0], "yyyyMMdd", null);
-            var endDate = dates.Length > 1 ? DateTime.ParseExact(dates[1], "yyyyMMdd", null) : startDate;
+            var startDate = DateTime.ParseExact(dates[0], Constants.JsonDateFormat, null);
+            var endDate = dates.Length > 1 ? DateTime.ParseExact(dates[1], Constants.JsonDateFormat, null) : startDate;
             var roomType = parameters[2].Trim();
 
             return new AvailabilityQuery

@@ -1,4 +1,5 @@
-﻿using HotelRoomManagement.Domain.Entities;
+﻿using HotelRoomManagement.Domain;
+using HotelRoomManagement.Domain.Entities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -20,7 +21,7 @@ namespace HotelRoomManagement.Infrastructure.Repositories
 
         protected JsonSerializerSettings DefaultSettings { get; } = new JsonSerializerSettings
         {
-            DateFormatString = "yyyyMMdd",
+            DateFormatString = Constants.JsonDateFormat,
             NullValueHandling = NullValueHandling.Ignore
         };
 
