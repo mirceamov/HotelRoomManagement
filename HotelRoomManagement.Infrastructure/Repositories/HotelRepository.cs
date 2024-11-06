@@ -7,6 +7,8 @@ namespace HotelRoomManagement.Infrastructure.Repositories
 {
     public class HotelRepository : BaseJsonRepository, IHotelRepository
     {
+        private const string JSON_PROP_ID = "id";
+
         public HotelRepository(string hotelFilePath) : base(hotelFilePath)
         { }
 
@@ -16,7 +18,7 @@ namespace HotelRoomManagement.Infrastructure.Repositories
             using var jsonReader = new JsonTextReader(reader);
             var json = await JToken.LoadAsync(jsonReader);
             var hotel = json
-                .FirstOrDefault(h => h["id"]?.Value<string>() == hotelId)?
+                .FirstOrDefault(h => h[JSON_PROP_ID]?.Value<string>() == hotelId)?
                 .ToObject<Hotel>();
 
             return hotel ?? throw new ArgumentException($"Hotel {hotelId} doesn't exist.");

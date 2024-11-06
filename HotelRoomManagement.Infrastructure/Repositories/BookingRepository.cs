@@ -7,6 +7,8 @@ namespace HotelRoomManagement.Infrastructure.Repositories
 {
     public class BookingRepository : BaseJsonRepository, IBookingRepository
     {
+        private const string JSON_PROP_HOTELID = "hotelId";
+
         public BookingRepository(string filePath) : base(filePath)
         {
         }
@@ -32,7 +34,7 @@ namespace HotelRoomManagement.Infrastructure.Repositories
                         {
                             var bookingToken = await JToken.ReadFromAsync(jsonReader);
 
-                            if (bookingToken["hotelId"]?.Value<string>() == hotelId)
+                            if (bookingToken[JSON_PROP_HOTELID]?.Value<string>() == hotelId)
                             {
                                 var booking = bookingToken.ToObject<Booking>();
                                 if (booking != null)
