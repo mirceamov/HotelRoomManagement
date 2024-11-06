@@ -19,7 +19,7 @@ namespace HotelRoomManagement.Application.Queries.RoomTypes
             var hotel = await _hotelRepository.GetHotelAsync(query.HotelId);
             var hotelBookings = await _bookingRepository.GetHotelBookingsAsync(query.HotelId);
 
-            // Step 1: Guard Clause - Check if there's enough capacity
+            // Step 1: Guard Clause - Check if there's enough capacity and allocation is possible
             int availableCapacity = CalculateAvailableCapacity(hotel, hotelBookings, query.StartDate, query.EndDate);
 
             if (availableCapacity < query.Guests)
@@ -62,26 +62,25 @@ namespace HotelRoomManagement.Application.Queries.RoomTypes
             var requiredRooms = new List<string>();
             int remainingGuests = guests;
 
-            // Order room types by size (largest first for more efficient packing)
+            // Order with largest room type first in order to minimise the number of rooms to accommodate the guests
             var roomTypes = hotel.RoomTypes
                 .Where(rt => availableRoomCounts.ContainsKey(rt.Code) && availableRoomCounts[rt.Code] > 0)
                 .OrderByDescending(rt => rt.Size).ToList();
 
+            // Avoid partially filling rooms by starting from the largest to the smallest room type
             foreach (var roomType in roomTypes)
             {
                 int availableRoomsOfType = availableRoomCounts[roomType.Code];
                 int roomsNeeded = remainingGuests / roomType.Size;
 
-                // Limit rooms needed to available count
+                // Limit rooms of this type needed to the available count
                 if (roomsNeeded > availableRoomsOfType)
                 {
                     roomsNeeded = availableRoomsOfType;
                 }
 
-                // Deduct guests according to the rooms allocated
                 remainingGuests -= roomsNeeded * roomType.Size;
 
-                // Add allocated rooms to the list
                 for (int i = 0; i < roomsNeeded; i++)
                 {
                     requiredRooms.Add(roomType.Code);
@@ -91,13 +90,10 @@ namespace HotelRoomManagement.Application.Queries.RoomTypes
                 availableRoomCounts[roomType.Code] -= roomsNeeded;
             }
 
-            // Handle any remaining guests with a partially filled room
+            // Handle any remaining guests with a partially filled room by finding the smallest available room that can accommodate them. 
             if (remainingGuests > 0)
             {
-                // Find the smallest available room that can accommodate the partial allocation
                 var smallestRoomType = roomTypes.First(rt => availableRoomCounts[rt.Code] > 0);
-
-                // Partially allocate the room and mark it with "!"
                 requiredRooms.Add(smallestRoomType.Code + "!");
             }
 
